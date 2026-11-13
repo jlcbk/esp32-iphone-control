@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  host-tests:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Compile Swift host helpers
+        run: |
+          swiftc -O screen_ocr.swift -o screen_ocr
+          swiftc -O usb_capture.swift -o usb_capture
+          swiftc -O vt_decoder.swift -o vt_decoder
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install Python dependencies
+        run: pip install pyserial av Pillow
+      - name: Syntax check Python modules
+        run: python3 -m py_compile iphone_ctl.py iphone_agent.py clipboard_http.py som_grounding.py ziranma.py
+      - name: Run Python unit tests
+        run: python3 -m unittest discover -s tests -v
+
+  firmware:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Install ESP32 core and NimBLE-Arduino
+        run: |
+          arduino-cli core update-index --additional-urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core install esp32:esp32@3.3.12 --additional-urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli lib install "NimBLE-Arduino@2.5.1"
+      - name: Build firmware
+        run: hardware/flash.sh --build-only
+      - name: Run firmware host C tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmbedtls-dev
+          make -C hardware/tests test

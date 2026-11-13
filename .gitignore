@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Local config and secrets
+.env
+hardware/hid_bridge/secrets.h
+/iphone_calibration.json
+/iphone_intents.json
+
+# Compiled host binaries
+/screen_ocr
+/vt_decoder
+/usb_capture
+
+# Unrelated local scratch scripts
+/android_ctl.py
+/seeker_wander.py
+
+# Build output
+hardware/build/
+hardware/hid_bridge/build/
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/
+
+# Host test output
+hardware/tests/test
+hardware/tests/test.dSYM/
+hardware/tools/out/
+
+# Firmware release packages (hardware/tools/fw_release.py)
+hardware/dist/
+
+# Simulator test output
+hardware/tests/sim/cli_sim
+hardware/tests/sim/cli_sim.dSYM/
+hardware/tests/sim/*.o
+hardware/tests/sim/screen.h264

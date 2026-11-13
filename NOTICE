@@ -1,0 +1,35 @@
+ESP32 iPhone Control
+Copyright (c) 2026 jlcbk
+https://github.com/jlcbk/esp32-iphone-control
+
+This project is licensed under the MIT License (see LICENSE).
+
+Upstream & Third-Party Notices
+------------------------------
+The ESP32 AirPlay receiver and BLE/USB HID bridge firmware under `hardware/`
+is adapted from and based on:
+
+  ESP32 iPhone Agent
+  Copyright (c) 2026 Henry Yuan
+  https://github.com/onehumanbeing/esp32-iphone-agent
+  Licensed under the MIT License.
+
+The AirPlay mirroring decoder component under `hardware/hid_bridge/src/airplay/`
+is derived from UxPlay (https://github.com/FDH2/UxPlay) and is licensed under
+the GNU General Public License v3.0 (GPL-3.0; see
+`hardware/hid_bridge/src/airplay/LICENSE-GPL.md`). Firmware binaries linking
+this component are distributed under GPL-3.0.
+
+Attribution
+-----------
+If you use, copy, modify, port, or build on any part of this project
+(including the derived firmware under `hardware/`), you must keep the
+copyright notices above and the LICENSE file in your copy, as required by
+the MIT License.
+
+Public projects, demos, videos, or posts using the derived firmware
+component should also retain the copyright notice and visibly credit
+upstream:
+
+  Based on ESP32 iPhone Agent by Henry Yuan
+  https://github.com/onehumanbeing/esp32-iphone-agent
