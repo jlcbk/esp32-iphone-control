@@ -113,7 +113,7 @@ def detect_red_badges(image_path: str = LIVE_JPG, ocr_items: list[dict] | None =
         scale = 2 if orig_w >= 600 else 1
         sw, sh = orig_w // scale, orig_h // scale
         small = im.convert("RGB").resize((sw, sh), Image.Resampling.NEAREST) if scale > 1 else im.convert("RGB")
-        px = list(small.getdata())
+        px = list(getattr(small, "get_flattened_data", small.getdata)())
 
     mask = [False] * (sw * sh)
     for idx, (r, g, b) in enumerate(px):

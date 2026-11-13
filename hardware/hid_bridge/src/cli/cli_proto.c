@@ -6,6 +6,10 @@
 #include <mbedtls/hkdf.h>
 #include <mbedtls/md.h>
 
+#ifndef MBEDTLS_PRIVATE
+#define MBEDTLS_PRIVATE(x) x
+#endif
+
 static const mbedtls_md_info_t *sha256(void) { return mbedtls_md_info_from_type(MBEDTLS_MD_SHA256); }
 
 static int rng(void *ctx, unsigned char *p, size_t n) {

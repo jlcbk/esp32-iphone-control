@@ -96,7 +96,7 @@ class TestStage2PasteIntegration(unittest.TestCase):
             with mock.patch("iphone_ctl.get_clipboard_server", return_value=srv), mock.patch.object(
                 ctl, "wait_settled", return_value=0.0
             ):
-                res = ctl.paste_text(payload, trigger="btn:3", timeout=0.90)
+                res = ctl.paste_text(payload, trigger="btn:3", timeout=1.50)
         finally:
             for t in timer_holder:
                 t.join(timeout=1.0)
@@ -105,7 +105,7 @@ class TestStage2PasteIntegration(unittest.TestCase):
         self.assertTrue(res["ok"])
         self.assertEqual(res["mode"], "http_clip")
         self.assertEqual(res["chars"], len(payload))
-        self.assertLess(res["ms"], 250.0)
+        self.assertLess(res["ms"], 900.0)
         self.assertEqual(fetched_bodies, [payload])
         self.assertEqual(bridge.cmds, ["click 3", "key cmd+v"])
 

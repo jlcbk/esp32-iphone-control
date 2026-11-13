@@ -15,6 +15,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
 import socket
+import socketserver
 import subprocess
 import threading
 import time
@@ -58,6 +59,12 @@ class _ReuseThreadingHTTPServer(ThreadingHTTPServer):
     def __init__(self, server_address: tuple[str, int], handler_cls, mailbox: ClipboardMailboxServer):
         self.mailbox = mailbox
         super().__init__(server_address, handler_cls)
+
+    def server_bind(self) -> None:
+        """Bind socket without HTTPServer's reverse-DNS socket.getfqdn() stall."""
+        socketserver.TCPServer.server_bind(self)
+        self.server_name = self.socket.getsockname()[0]
+        self.server_port = self.socket.getsockname()[1]
 
 
 class _ClipboardHandler(BaseHTTPRequestHandler):
